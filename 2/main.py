@@ -144,7 +144,11 @@ def understanding_Vietnamese():
         robot_brain = "Xin chào Phước"
     elif "giờ" in you:
         now = datetime.now()
-        robot_brain = now.strftime("%H giờ %M phút")
+        robot_brain = now.strftime("%H hour %M minute")
+
+        robot_brain = robot_brain.replace("hour", "giờ")
+        robot_brain = robot_brain.replace("minute", "phút")
+
     elif "hôm nay" in you:
         today = date.today()
         robot_brain = today.strftime("%B %d, %Y")

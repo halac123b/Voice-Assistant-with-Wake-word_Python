@@ -11,7 +11,7 @@ def understanding():
     elif "today" in you:
         today = date.today()
         robot_brain = today.strftime("%B %d, %Y")
-    
+
     elif "president" in you:
         robot_brain = "Joe Biden"
     elif "stop" in you:
