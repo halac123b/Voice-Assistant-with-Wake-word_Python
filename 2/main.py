@@ -14,7 +14,9 @@ import smtplib
 you = ""
 robot_ear = speech_recognition.Recognizer()
 robot_brain = ""
+
 robot_mouth = pyttsx3.init()
+robot_mouth.setProperty('rate', 120)
 
 def listening_EngLish():
     global robot_ear
@@ -130,7 +132,7 @@ def listening_Vietnamese():
     print("Robot: ...")
     try:
         # Google có hỗ trợ tiếng Việt
-        you = robot_ear.recognize_google(audio, language="vi-VN", show_all=False)
+        you = robot_ear.recognize_google(audio, language="vi-VN", show_all=False).lower()
     except:
         you = ""
     print("Bạn: "+ you)
@@ -141,7 +143,7 @@ def understanding_Vietnamese():
     if you == "":
         robot_brain = "Tôi không thể nghe được, hãy nói lại"
     elif "chào" in you:
-        robot_brain = "Xin chào Phước"
+        robot_brain = "Xin chào Hà"
     elif "giờ" in you:
         now = datetime.now()
         robot_brain = now.strftime("%H hour %M minute")
@@ -163,7 +165,6 @@ def understanding_Vietnamese():
     else:
         robot_brain = "Xin cảm ơn bạn"
 
-
     print(robot_brain)
 
 def speaking_Vietnamese(text):
@@ -171,10 +172,15 @@ def speaking_Vietnamese(text):
     # Google Text to Speech
         # Chỉ Google mới hỗ trợ tiếng Việt, pyttsx3 thì không
         # Cần phải ghi âm lại thành file rồi mới phát được
-    tts = gTTS(text=text, lang='vi', slow=False)
-    tts.save("sound.mp3")
-    playsound.playsound("sound.mp3")
-    os.remove("sound.mp3")
+    #tts = gTTS(text=text, lang='vi', slow=False)
+    # tts.save("sound.mp3")
+    # playsound.playsound("sound.mp3")
+    # os.remove("sound.mp3")
+    voices = robot_mouth.getProperty('voices')
+    robot_mouth.setProperty('voice', voices[1].id)
+    robot_mouth.say(text)
+    robot_mouth.runAndWait()
+
 
 def open_application_VN():
     speaking_Vietnamese("Bạn muốn mở phần mềm nào")
