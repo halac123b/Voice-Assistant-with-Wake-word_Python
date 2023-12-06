@@ -1,4 +1,4 @@
-speechrecognition
+SpeechRecognition
 neuralintents
 pyttsx3
 PyAudio
