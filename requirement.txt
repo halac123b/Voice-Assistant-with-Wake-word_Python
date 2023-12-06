@@ -1,0 +1,4 @@
+speechrecognition
+neuralintents
+pyttsx3
+PyAudio
