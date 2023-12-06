@@ -10,21 +10,11 @@ import playsound
 import webbrowser
 import smtplib
 
-# Python language binding for Selenium WebDriver
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import re
-
 #Common Variable for Both Vietnamese and English Code
 you = ""
 robot_ear = speech_recognition.Recognizer()
 robot_brain = ""
 robot_mouth = pyttsx3.init()
-
-print("Which Languages do you want to use: Vietnamese - English")
-option = input()
-
-
 
 def listening_EngLish():
     global robot_ear
@@ -47,28 +37,34 @@ def listening_EngLish():
 def understanding_English():
     global robot_brain
     global you
-    if you=="":
+    if you == "":
         robot_brain = "I can't hear you, try again"
     elif "hello" in you:
-        robot_brain = "Hello Peter"
+        robot_brain = "Hello River"
+    # Hỏi giờ
     elif "time" in you:
-        now=datetime.now()
+        now = datetime.now()
         robot_brain = now.strftime("%H hours %M minutes")
+    # Hỏi ngày
     elif "today" in you:
         today = date.today()
         robot_brain = today.strftime("%B %d, %Y")
 
+    # Hỏi tổng thống Mỹ là ai
     elif "president" in you:
         robot_brain = "Joe Biden"
-    elif "software" in you:   #When we add a function in brain of English => we need to change robot_brain="_" at the end
+    # Mở software
+        # When we add a function in brain of English => we need to change robot_brain="" at the end
+    elif "software" in you:
         open_application_EN()
-        robot_brain = ""
+        # robot_brain = ""
+    # Mở website
     elif "website" in you:
         open_website_EN()
-        robot_brain= ""
+        # robot_brain= ""
 
     elif "stop" in you:
-        robot_brain="I will stop the program"
+        robot_brain = "I will stop the program"
     else:
         robot_brain = "I'm fine thank you and you"
 
@@ -89,6 +85,7 @@ def open_website_EN():
     website = input("Website's name: ")
 
     if website == "1":
+        # Open website by webbrowser package
         webbrowser.open("https://www.facebook.com/")
 
     elif website=="2":
@@ -100,14 +97,14 @@ def open_website_EN():
     elif website=="5":
         webbrowser.open("https://www.youtube.com/")
 
-    speaking_Vietnamese("Trang web bạn yêu cầu đã được mở.")
-
+    speaking_EngLish("Your website has been opened.")
 
 def open_application_EN():
     speaking_EngLish("Which software do you want to open")
     application = input("Software Name: ")
     if "Google" in application:
         speaking_EngLish("Open Google Chrome")
+        # Start software with .lnk file by os package
         os.startfile(
             'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Google Chrome.lnk')
     elif "Word" in application:
@@ -120,7 +117,9 @@ def open_application_EN():
             'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Excel.lnk')
     else:
         speaking_EngLish("Software wasn't dowloaded. Please dowload it")
+
 #____________________________________________________Divide Betwwen English and Vietnamese Code
+
 def listening_Vietnamese():
     global robot_ear
     global you
@@ -130,6 +129,7 @@ def listening_Vietnamese():
 
     print("Robot: ...")
     try:
+        # Google có hỗ trợ tiếng Việt
         you = robot_ear.recognize_google(audio, language="vi-VN", show_all=False)
     except:
         you = ""
@@ -138,20 +138,20 @@ def listening_Vietnamese():
 def understanding_Vietnamese():
     global robot_brain
     global you
-    if you=="":
+    if you == "":
         robot_brain = "Tôi không thể nghe được, hãy nói lại"
     elif "chào" in you:
         robot_brain = "Xin chào Phước"
     elif "giờ" in you:
-        now=datetime.now()
+        now = datetime.now()
         robot_brain = now.strftime("%H giờ %M phút")
     elif "hôm nay" in you:
         today = date.today()
         robot_brain = today.strftime("%B %d, %Y")
-    elif "tổng thống" in you:
-        robot_brain = "Joe Biden"
+    elif "chủ tịch" in you:
+        robot_brain = "Võ Văn Thưởng"
     elif "dừng" in you:
-        robot_brain="Tôi sẽ dừng chương trình"
+        robot_brain = "Tôi sẽ dừng chương trình"
     elif "phần mềm" in you:
         open_application_VN()
     elif "trang web" in you:
@@ -164,6 +164,9 @@ def understanding_Vietnamese():
 
 def speaking_Vietnamese(text):
     print("Robot: " + text)
+    # Google Text to Speech
+        # Chỉ Google mới hỗ trợ tiếng Việt, pyttsx3 thì không
+        # Cần phải ghi âm lại thành file rồi mới phát được
     tts = gTTS(text=text, lang='vi', slow=False)
     tts.save("sound.mp3")
     playsound.playsound("sound.mp3")
@@ -212,39 +215,47 @@ def open_website_VN():
     speaking_Vietnamese("Trang web bạn yêu cầu đã được mở.")
 
 def send_email_VN():
+    '''Hàm gửi email bằng Python, chưa được tích hợp vào chatbot'''
     speaking_Vietnamese('Bạn gửi email cho ai nhỉ')
     recipient = input("Email của người bạn muốn gửi")
     if 'yến' in recipient:
         speaking_Vietnamese('Nội dung bạn muốn gửi là gì')
         print("Nội Dung: ")
         content = input()
+        # Init SMTP protocol
         mail = smtplib.SMTP('smtp.gmail.com', 587)
         mail.ehlo()
         mail.starttls()
-        mail.login('halac123game@gmail.com', 'hapass2a')
-        mail.sendmail('halac123game@gmail.com',
-                      'halac123b@gmail.com', content.encode('utf-8'))
+
+        # Login to Gmail and send email
+        mail.login('yourgmail@gmail.com', 'yourpassword')
+        mail.sendmail('yourgmail@gmail.com',
+                      'receivermail@gmail.com', content.encode('utf-8'))
         mail.close()
         speaking_Vietnamese('Email của bạn vùa được gửi. Bạn check lại email nhé hihi.')
     else:
         speaking_Vietnamese('Bot không hiểu bạn muốn gửi email cho ai. Bạn nói lại được không?')
 
-#If Choose Option EngLish
-if option=="English":
-    while "stop" not in robot_brain :
-        listening_EngLish()
-        understanding_English()
-        speaking_EngLish(robot_brain)
-#If Choose Option Vietnameses
-elif option=="Vietnamese":
-    while "dừng" not in robot_brain:
-        listening_Vietnamese()
-        understanding_Vietnamese()
-        speaking_Vietnamese(robot_brain)
 
+def main():
+    print("Which Languages do you want to use: Vietnamese - English")
+    option = input()
 
+    #If Choose Option EngLish
+    if option=="English":
+        while "stop" not in robot_brain :
+            listening_EngLish()
+            understanding_English()
+            speaking_EngLish(robot_brain)
+    #If Choose Option Vietnameses
+    elif option=="Vietnamese":
+        while "dừng" not in robot_brain:
+            listening_Vietnamese()
+            understanding_Vietnamese()
+            speaking_Vietnamese(robot_brain)
 
-
+if __name__ == "__main__":
+    main()
 
 
 

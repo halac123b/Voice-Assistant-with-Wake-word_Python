@@ -2,5 +2,4 @@ SpeechRecognition
 pyttsx3
 gtts
 playsound==1.2.2
-selenium
 PyAudio
